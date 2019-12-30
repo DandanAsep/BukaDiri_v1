@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+<center><img src="~/Content/Pictures/logobukadiri.jpg" alt="Logo BukaDiri" width="300" height="125" onclick="window.location.href='/'" /></center>
+<div align="right" class="btn_homesetting">
+    <div class="btn-group">
+        <button type="button" class="btn btn-success active">Home</button>
+        <button type="button" class="btn btn-outline-success" onclick="window.location.href='/Setting'">Setting</button>
+    </div>
+</div>
+<hr />
+<table class="table" id="listDataHome">
+    <thead>
+        <tr>
+            <th>Nama Item</th>
+            <th>Harga Item</th>
+            <th>Nama Provinsi</th>
+            <th>Nama Pilihan</th>
+            <th>Nama Lapak</th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //load data Item (list)
+            $("#listDataHome").DataTable({
+                "aLengthMenu": [[5, 10, 25, 50, 75, -1], [5, 10, 25, 50, 75, "Semua"]],
+                "iDisplayLength": 5,
+                "ajax": {
+                    "url": "/Home/LoadData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "NamaItem" },
+                    { "data": "HargaItem" },
+                    { "data": "NamaProv" },
+                    { "data": "NamaPilihan" },
+                    { "data": "NamaLapak" }
+                    
+                ],
+                "language": {
+                    "emptyTable": "Tidak ada data yang disimpan!",
+                    "infoEmpty": "Menampilkan 0 - 0 dari 0 data",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                    "infoFiltered": "(Dari total _MAX_ data)",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "search": "Cari:",
+                    "processing": "Sedang dalam proses...",
+                    "loadingRecords": "Harap tunggu...",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    }
+                }
+            });//akhir load list data
+        });
+    </script>
+}

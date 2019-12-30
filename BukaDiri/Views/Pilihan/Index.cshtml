@@ -1,0 +1,415 @@
+﻿
+@{
+    ViewBag.Title = "Pilihan";
+}
+
+<center><img src="~/Content/Pictures/logobukadiri.jpg" alt="Logo BukaDiri" width="300" height="125" onclick="window.location.href='/'" /></center>
+<div align="center">
+    <div class="btn-group">
+        <button type="button" onclick="window.location.href='/Provinsi'" class="btn btn-outline-success set_btn">Provinsi</button>
+        <button type="button" onclick="window.location.href='/Pilihan'" class="btn btn-success set_btn active">Pilihan</button>
+        <button type="button" onclick="window.location.href='/Lapak'" class="btn btn-outline-success set_btn">Lapak</button>
+        <button type="button" onclick="window.location.href='/Item'" class="btn btn-outline-success set_btn">Item</button>
+    </div>
+</div>
+<hr />
+<!-- Button trigger modal Tambah data pilihan-->
+<button type="button" class="btn btn-primary" data-toggle="modal" id="tampilModalTambah">
+    <i class="fa fa-plus-circle"></i> Tambah Data
+</button>
+@* Button Export Laporan *@
+<a class="btn btn-primary" href="@Url.Action("ExportReportPilihan","Pilihan")"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export Data Pilihan</a><br><br>
+
+@* =======alert======= *@
+<div id="notifsukses" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+    <strong id="pesansukses">Data berhasil disimpan!</strong>
+    @*<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>*@
+</div>
+
+<div id="notifgagal" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+    <strong id="pesangagal">Data gagal disimpan!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<table class="table" id="listDataPilihan">
+    <thead>
+        <tr>
+            <th>Kode Pilihan</th>
+            <th>Nama Pilihan</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+@* Modal Tambah *@
+<!-- Modal -->
+<div class="modal fade" id="modalTambahPilihan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Pilihan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formTambahPilihan">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="kodePilihan" class="col-sm-4 col-form-label">Kode Pilihan</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="KodePilihan" name="kode_pilihan" placeholder="Kode Pilihan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="namaPilihan" class="col-sm-4 col-form-label">Nama Pilihan</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="NamaPilihan" name="nama_pilihan" placeholder="Nama Pilihan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="diskonPilihan" class="col-sm-4 col-form-label">Diskon Pilihan</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="diskon_pilihan" id="DiskonPilihan">
+                                <option value="">-Diskon Pilihan-</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-power-off"></i> Tutup</button>
+                    <button type="reset" class="btn btn-danger"><i class="fa fa-recycle"></i> Set Ulang</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Modal Edit *@
+<!-- Modal -->
+<div class="modal fade" id="modalEditPilihan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Data Pilihan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formEditPilihan">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="kodePilihan" class="col-sm-4 col-form-label">Kode Pilihan</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="KodePilihanEdit" name="kode_pilihan" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="namaPilihan" class="col-sm-4 col-form-label">Nama Pilihan</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="NamaPilihanEdit" name="nama_pilihan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="diskonPilihan" class="col-sm-4 col-form-label">Diskon Pilihan</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="diskon_pilihan" id="DiskonPilihanEdit">
+                                <option value="">--Diskon Pilihan--</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-power-off"></i> Tutup</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Update Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Modal Detail *@
+<!-- Modal -->
+<div class="modal fade" id="modalDetailPilihan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Data Pilihan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="kodePilihan" class="col-sm-4 col-form-label">Kode Pilihan</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="KodePilihanDetail" name="kode_pilihan" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="namaPilihan" class="col-sm-4 col-form-label">Nama Pilihan</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="NamaPilihanDetail" name="nama_pilihan" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="diskonPilihan" class="col-sm-4 col-form-label">Diskon Pilihan</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="DiskonPilihanDetail" name="nama_pilihan" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-power-off"></i> Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal Delete *@
+<div class="modal" tabindex="-1" role="dialog" id="modalHapusPilihan">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah anda yakin akan menghapusnya?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-power-off"></i> Tutup</button>
+                <button type="button" class="btn btn-danger" id="hapusOK"><i class="fa fa-trash-o"></i> Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            //load data pilihan (list)
+            $("#listDataPilihan").DataTable({
+                "aLengthMenu": [[5, 10, 25, 50, 75, -1], [5, 10, 25, 50, 75, "Semua"]],
+                "iDisplayLength": 5,
+                "ajax": {
+                    "url": "/Pilihan/LoadData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "kode_pilihan" },
+                    { "data": "nama_pilihan" },
+                    {//tambahan untuk button
+                        "data": "kode_pilihan", "render": function (data) {
+                            return "<button id='" + data + "' class='lihat btn btn-info'><i class='fa fa-eye'></i> Lihat</button>&nbsp;<button id='" + data + "' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i> Edit</button>&nbsp;<button class='hapus btn btn-danger' id='" + data + "'><i class='fa fa-trash-o'></i> Hapus</button>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "300px"
+                    },
+                ],
+                "language": {
+                    "emptyTable": "Tidak ada data yang disimpan!",
+                    "infoEmpty": "Menampilkan 0 - 0 dari 0 data",
+                    "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                    "infoFiltered": "(Dari total _MAX_ data)",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "search": "Cari:",
+                    "processing": "Sedang dalam proses...",
+                    "loadingRecords": "Harap tunggu...",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    }
+                }
+            });//akhir load list data
+
+
+            //munculin modal tambah
+            $("#tampilModalTambah").click(function () {
+                $("#modalTambahPilihan").modal({ backdrop: "static", keyboard: false });
+            });//akhir modal tambah
+
+            //reset isi modal tambah saat di close
+            $('#modalTambahPilihan').on('hidden.bs.modal', function (e) {
+                $(this).find('#formTambahPilihan')[0].reset();
+            });
+
+            //reset isi modal edit saat di close
+            $('#modalEditPilihan').on('hidden.bs.modal', function (e) {
+                $(this).find('#formEditPilihan')[0].reset();
+            });
+
+            //proses tambah
+            $("#formTambahPilihan").on('submit', function (event) {
+                event.preventDefault();
+                //preventDefault atau event.preventDefault() adalah sebuah method yang berfungsi untuk mencegah terjadinya event bawaan dari sebuah DOM, misalnya tag "a href" jika kita klik, maka halaman browser akan melakukan reload, atau sebuah form jika kita klik tombol submit maka akan melakukan reload pula
+
+                var kode = $("#KodePilihan").val();
+                //alert(kode.length);
+                var nama = $("#NamaPilihan").val();
+                if (kode == "") {
+                    alert("Kode Pilihan tidak boleh kosong!");
+                } else if (kode.length > 5 || kode.length < 5) {
+                    alert("Kode Pilihan harus 5 digit!");
+                } else if (nama == "") {
+                    alert("Nama Pilihan tidak boleh kosong!");
+                } else {
+                    $.ajax({
+                        url: "/Pilihan/SimpanDataPilihan", //action-penting
+                        method: "POST", //methode-penting
+                        data: new FormData(this), //optional
+                        contentType: false, //optional
+                        cache: false, //optional
+                        processData: false, //optional
+                        dataType: "json", //optional
+                        success: function (data) { //penting
+                            if (data.success == 1) {
+                                //alert("aaaa");
+                                $("#listDataPilihan").DataTable().ajax.reload();
+                                $("#pesansukses").text('Data berhasil disimpan!');
+                                //$("#notifsukses").css("display", "block");
+                                $("#notifsukses").fadeTo(4000, 500).slideUp(500, function () {
+                                    $("#notifsukses").slideUp(500);
+                                });
+                                //$("#modalTambahPilihan").modal("hide");
+                            } else {
+                                $("#pesangagal").text('Data gagal disimpan, kode pilihan sudah terpakai!');
+                                //$("#notifgagal").css("display", "block");
+                                $("#notifgagal").fadeTo(4000, 500).slideUp(500, function () {
+                                    $("#notifgagal").slideUp(500);
+                                });
+                                //$("#modalTambahPilihan").modal("hide");
+                            }
+                            $("#modalTambahPilihan").modal("hide");
+                        }
+                    });
+                }
+            });//akhir proses tambah
+
+            //Detail
+            $(document).on('click', '.lihat', function () {
+                var kode = $(this).attr("id");
+                //alert(kode);
+                //console.log(nm);
+
+                $.ajax({
+                    url: "/Pilihan/DetailDataPilihan/" + kode,
+                    dataType: "json",
+                    success: function (json) {
+
+                        //console.log(json);
+                        $("#KodePilihanDetail").val(json.data.kode_pilihan);
+                        $("#NamaPilihanDetail").val(json.data.nama_pilihan);
+                        $("#DiskonPilihanDetail").val(json.data.diskon_pilihan+"%");
+                        $("#modalDetailPilihan").modal({ backdrop: "static", keyboard: false });
+                    }
+                });
+            });//akhir Detail
+
+            //edit
+            $(document).on('click', '.edit', function () {
+                var kode = $(this).attr("id");
+                //alert(kode);
+                //console.log(nm);
+
+                $.ajax({
+                    url: "/Pilihan/EditDataPilihan/" + kode,
+                    dataType: "json",
+                    success: function (json) {
+
+                        //console.log(json);
+                        $("#KodePilihanEdit").val(json.data.kode_pilihan);
+                        $("#NamaPilihanEdit").val(json.data.nama_pilihan);
+                        $("#DiskonPilihanEdit").val(json.data.diskon_pilihan);
+                        $("#modalEditPilihan").modal({ backdrop: "static", keyboard: false });
+                    }
+                });
+            });//akhir edit
+
+            //proses update data pilihan
+            $("#formEditPilihan").on('submit', function (event) {
+                event.preventDefault();
+                //preventDefault atau event.preventDefault() adalah sebuah method yang berfungsi untuk mencegah terjadinya event bawaan dari sebuah DOM, misalnya tag "a href" jika kita klik, maka halaman browser akan melakukan reload, atau sebuah form jika kita klik tombol submit maka akan melakukan reload pula.
+                $.ajax({
+                    url: "/Pilihan/UbahDataPilihan", //action-penting
+                    method: "POST", //methode-penting
+                    data: new FormData(this), //optional
+                    contentType: false, //optional
+                    cache: false, //optional
+                    processData: false, //optional
+                    dataType: "json", //optional
+                    success: function (data) { //penting
+                        if (data.success == 1) {
+                            $("#listDataPilihan").DataTable().ajax.reload();
+                            $("#pesansukses").text('Data berhasil diupdate!');
+                            //$("#notifsukses").css("display", "block");
+                            $("#notifsukses").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#notifsukses").slideUp(500);
+                            });
+                        } else {
+                            $("#pesangagal").text('Data gagal diupdate!');
+                            //$("#notifgagal").css("display", "block");
+                            $("#notifgagal").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#notifgagal").slideUp(500);
+                            });
+                            //$("#modalEditPilihan").modal("hide");
+                        }
+                        $("#modalEditPilihan").modal("hide");
+                    }
+                });
+            });
+
+            //modal hapus(konfirmasi)
+            var kode_hapus;//variable global
+            $(document).on('click', '.hapus', function () {
+                kode_hapus = $(this).attr("id");
+                $("#modalHapusPilihan").modal({ backdrop: "static", keyboard: false });
+            });
+
+
+            //proses delete
+            $("#hapusOK").click(function () {
+                $.ajax({
+                    url: "/Pilihan/HapusDataPilihan/" + kode_hapus,
+                    beforeSend: function () {
+                        $("#hapusOK").html('<i class="fa fa-hourglass-half"></i> proses menghapus . . .');
+                    },
+                    success: function (data) {
+                        setTimeout(function () {
+                            $("#hapusOK").html('<i class="fa fa-trash-o"></i> Hapus');
+                            $("#modalHapusPilihan").modal("hide");
+                            $("#pesansukses").text(' Data berhasil dihapus!');
+                            //$("#notifsukses").css("display", "block");
+                            $("#notifsukses").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#notifsukses").slideUp(500);
+                            });
+                            $("#listDataPilihan").DataTable().ajax.reload();
+                        }, 2000);
+                    }
+                });
+            });//akhir hapus
+        });//document ready function
+    </script>
+}
+
