@@ -105,13 +105,9 @@ namespace BukaDiri.Controllers
                 Password = "12345"
             };
             rd.SetDatabaseLogon("sa", "12345");
-            foreach (Table tbl in rd.Database.Tables)
-            {
-                tbl.LogOnInfo.ConnectionInfo = connectInfo;
-                tbl.ApplyLogOnInfo(tbl.LogOnInfo);
-            }
+            
 
-            //rd.SetDataSource(db.Item.ToList());
+            rd.SetDataSource(db.Item.ToList());
 
             Response.Buffer = false;
             Response.ClearContent();
