@@ -1,7 +1,10 @@
 ﻿using BukaDiri.Context;
 using BukaDiri.Models;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -87,6 +90,43 @@ namespace BukaDiri.Controllers
             db.Item.Remove(Item);
             db.SaveChanges();
             return Json(new { success = 1 }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ExportReportItem()
+        {
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Report"), "ItemReport.rpt"));
+
+            ConnectionInfo connectInfo = new ConnectionInfo()
+            {
+                ServerName = "(local)\\sqlexpress",
+                DatabaseName = "BukaDiri",
+                UserID = "sa",
+                Password = "12345"
+            };
+            rd.SetDatabaseLogon("sa", "12345");
+            foreach (Table tbl in rd.Database.Tables)
+            {
+                tbl.LogOnInfo.ConnectionInfo = connectInfo;
+                tbl.ApplyLogOnInfo(tbl.LogOnInfo);
+            }
+
+            //rd.SetDataSource(db.Item.ToList());
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            try
+            {
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+                return File(stream, "application/pdf", "Item.pdf");
+            }
+            catch
+            {
+                throw;
+            }
+
         }
 	}
 }

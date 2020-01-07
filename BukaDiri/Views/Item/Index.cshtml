@@ -16,7 +16,10 @@
 <!-- Button trigger modal Tambah data Item-->
 <button type="button" class="btn btn-primary" data-toggle="modal" id="tampilModalTambah">
     <i class="fa fa-plus-circle"></i> Tambah Data
-</button><br><br>
+</button>
+@* Button Export Laporan *@
+<a class="btn btn-primary" href="@Url.Action("ExportReportItem", "Item")"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export Data Lapak</a><br><br>
+<br><br>
 
 @* =======alert======= *@
 <div id="notifsukses" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
