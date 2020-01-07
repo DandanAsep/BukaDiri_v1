@@ -383,8 +383,8 @@
                     url: "/Item/DetailDataItem/" + kode,
                     dataType: "json",
                     success: function (json) {
-                        //alert(json.data[0].KodeItem);
-                        //console.log(json);
+                        alert(json.data[0].KodeItem);
+                        console.log(json);
                         $("#KodeItemDetail").val(json.data[0].KodeItem);
                         $("#NamaItemDetail").val(json.data[0].NamaItem);
                         $("#HargaItemDetail").val(json.data[0].HargaItem);
@@ -407,7 +407,7 @@
                     dataType: "json",
                     success: function (json) {
 
-                        //console.log(json);
+                        console.log(json);
                         $("#KodeItemEdit").val(json.data.kode_item);
                         $("#NamaItemEdit").val(json.data.nama_item);
                         $("#HargaItemEdit").val(json.data.harga_item);

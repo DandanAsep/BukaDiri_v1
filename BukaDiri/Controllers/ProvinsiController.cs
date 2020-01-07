@@ -24,8 +24,9 @@ namespace BukaDiri.Controllers
         //method loaddataprovinsi
         public ActionResult LoadData()
         {
-            List<Provinsi> prov = db.Provinsi.ToList<Provinsi>();
-            return Json(new { data = prov }, JsonRequestBehavior.AllowGet);
+            List<Provinsi> prov = db.Provinsi.ToList<Provinsi>();// table provinsi
+            //List<Pilihan> pil = db.Pilihan.ToList<Pilihan>();// table Pilihan
+            return Json(new { data = prov}, JsonRequestBehavior.AllowGet);
         }
         
         //method simpandataprovinsi
